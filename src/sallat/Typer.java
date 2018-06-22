@@ -9,6 +9,13 @@ public class Typer extends PrintStream {
 	public static final long DEFAULT_DELAY = 100;
 	
 	private long delay = DEFAULT_DELAY;
+	
+	public long getDelay(){ return delay; }
+
+	public Typer setDelay(long delay){ 
+		this.delay = delay;
+		return this;
+       	}
 
 	public Typer(OutputStream out){
 		super(out);
@@ -25,14 +32,7 @@ public class Typer extends PrintStream {
 	public Typer(OutputStream out, boolean autoFlush, Charset charset){
 		super(out, autoFlush, charset);
 	}
-	
-	public long getDelay(){ return delay; }
-
-	public Typer setDelay(long delay){ 
-		this.delay = delay;
-		return this;
-       	}
-
+		
 	private void type(String s){
 		for(int i = 0; i < s.length(); i++){
 			try { Thread.sleep(delay) ;} catch(InterruptedException ex) {} // fix it!
