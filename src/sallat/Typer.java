@@ -97,50 +97,42 @@ public class Typer extends PrintStream {
 
 	@Override
 	public void println(boolean x){
-		print(x);
-		super.println();
+		println(String.valueOf(x));
 	}
 
 	@Override
 	public void println(char x){
-		print(x);
-		super.println();
+		println(String.valueOf(x));
 	}
 
 	@Override
 	public void println(char [] x){
-		print(x);
-		super.println();
+		println(String.valueOf(x));
 	}
 
 	@Override
 	public void println(double x){
-		print(x);
-		super.println();
+		println(String.valueOf(x));
 	}
 
 	@Override
 	public void println(float x){
-		print(x);
-		super.println();
+		println(String.valueOf(x));
 	}
 
 	@Override
 	public void println(int x){
-		print(x);
-		super.println();
+		println(String.valueOf(x));
 	}
 
 	@Override
 	public void println(long x){
-		print(x);
-		super.println();
+		println(String.valueOf(x));
 	}
 
 	@Override
 	public void println(Object x){
-		print(x);
-		super.println();
+		println(String.valueOf(x));
 	}
 
 	@Override
