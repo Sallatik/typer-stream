@@ -6,7 +6,7 @@ class Test {
 		System.setOut(new Typer(System.out)
 				.setDelay(200));
 
-		System.out.print("Hello World!");
+		System.out.append("Hello World!");
 		System.out.println();
 		System.out.println(false);
 		System.out.println(324.543);

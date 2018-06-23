@@ -42,42 +42,42 @@ public class Typer extends PrintStream {
 
 	@Override
 	public void print(boolean b){
-		type(String.valueOf(b));
+		print(String.valueOf(b));
 	}
 
 	@Override
 	public void print(char c){
-		type(String.valueOf(c));
+		print(String.valueOf(c));
 	}
 
 	@Override
 	public void print(char [] s){
-		type(new String(s));
+		print(new String(s));
 	}
 
 	@Override
 	public void print(double d){
-		type(String.valueOf(d));
+		print(String.valueOf(d));
 	}
 
 	@Override
 	public void print(float f){
-		type(String.valueOf(f));
+		print(String.valueOf(f));
 	}
 
 	@Override
 	public void print(int i){
-		type(String.valueOf(i));
+		print(String.valueOf(i));
 	}
 
 	@Override
 	public void print(long l){
-		type(String.valueOf(l));
+		print(String.valueOf(l));
 	}
 
 	@Override
 	public void print(Object obj){
-		type(String.valueOf(obj));
+		print(String.valueOf(obj));
 	}
 
 	@Override
@@ -86,12 +86,14 @@ public class Typer extends PrintStream {
 	}
 
 	@Override
-	public PrintStream printf(String format, Object... args){
+	public PrintStream format(String format, Object... args){
+		print(String.format(format, args));
 		return this;
 	}
 
 	@Override
-	public PrintStream printf(Locale l, String format, Object... args){
+	public PrintStream format(Locale l, String format, Object... args){
+		print(String.format(l, format, args));
 		return this;
 	}
 
