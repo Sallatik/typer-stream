@@ -16,6 +16,8 @@ public class Typer extends PrintStream {
 	public int getMaxDelay(){ return maxDelay; }
 
 	public Typer setDelayRange(int minDelay, int maxDelay) throws IllegalArgumentException{
+		if(maxDelay < 0 || minDelay < 0)
+			throw new IllegalArgumentException("delay values can't be negative");
 		if(maxDelay < minDelay)
 			throw new IllegalArgumentException("max delay must be greater than min delay");
 		this.minDelay = minDelay;
