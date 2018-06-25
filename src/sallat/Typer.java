@@ -40,8 +40,9 @@ public class Typer extends PrintStream {
 	}
 		
 	private void type(String s){
+		Random rand = new Random();
 		for(int i = 0; i < s.length(); i++){
-			int delay = minDelay + new Random().nextInt(maxDelay - minDelay + 1);
+			int delay = minDelay + rand.nextInt(maxDelay - minDelay + 1);
 			try { Thread.sleep(delay) ;} catch(InterruptedException ex) {} // fix it!
 			super.print(s.charAt(i));
 		}
