@@ -3,19 +3,25 @@ package sallat;
 import java.io.*;
 import java.nio.charset.Charset;
 import java.util.Locale;
+import java.util.Random;
 
 public class Typer extends PrintStream {
 
-	public static final long DEFAULT_DELAY = 100;
+	public static final int DEFAULT_DELAY = 100;
 	
-	private long delay = DEFAULT_DELAY;
-	
-	public long getDelay(){ return delay; }
+	private int minDelay = DEFAULT_DELAY;
+	private int maxDelay = DEFAULT_DELAY;
 
-	public Typer setDelay(long delay){ 
-		this.delay = delay;
+	public int getMinDelay(){ return minDelay; }
+	public int getMaxDelay(){ return maxDelay; }
+
+	public Typer setDelayRange(int minDelay, int maxDelay) throws IllegalArgumentException{
+		if(maxDelay < minDelay)
+			throw new IllegalArgumentException("max delay must be greater than min delay");
+		this.minDelay = minDelay;
+		this.maxDelay = maxDelay;
 		return this;
-       	}
+	}
 
 	public Typer(OutputStream out){
 		super(out);
@@ -35,6 +41,7 @@ public class Typer extends PrintStream {
 		
 	private void type(String s){
 		for(int i = 0; i < s.length(); i++){
+			int delay = minDelay + new Random().nextInt(maxDelay - minDelay + 1);
 			try { Thread.sleep(delay) ;} catch(InterruptedException ex) {} // fix it!
 			super.print(s.charAt(i));
 		}
