@@ -8,12 +8,15 @@ import java.util.Random;
 public class Typer extends PrintStream {
 
 	public static final int DEFAULT_DELAY = 100;
-	
+	public static final int DEFAULT_ACCURACY = 70;
+
 	private int minDelay = DEFAULT_DELAY;
 	private int maxDelay = DEFAULT_DELAY;
+	private int accuracy = DEFAULT_ACCURACY;
 
 	public int getMinDelay(){ return minDelay; }
 	public int getMaxDelay(){ return maxDelay; }
+	public int getAccuracy(){ return accuracy; }
 
 	public Typer setDelayRange(int minDelay, int maxDelay) throws IllegalArgumentException{
 		if(maxDelay < 0 || minDelay < 0)
@@ -22,6 +25,17 @@ public class Typer extends PrintStream {
 			throw new IllegalArgumentException("max delay must be greater than min delay");
 		this.minDelay = minDelay;
 		this.maxDelay = maxDelay;
+		return this;
+	}
+
+	public Typer setDelay(int delay) throws IllegalArgumentException{
+		return setDelayRange(delay, delay);
+	}
+
+	public Typer setAccuracy(int accuracy) throws IllegalArgumentException{
+		if(accuracy < 0 || accuracy > 100)
+			throw new IllegalArgumentException("accuracy value must be between 0 and 100");
+		this.accuracy = accuracy;
 		return this;
 	}
 
@@ -44,11 +58,26 @@ public class Typer extends PrintStream {
 	private void type(String s){
 		Random rand = new Random();
 		for(int i = 0; i < s.length(); i++){
-			int delay = minDelay + rand.nextInt(maxDelay - minDelay + 1);
-			try { Thread.sleep(delay) ;} catch(InterruptedException ex) {} // fix it!
+			delay(rand);
+			if(rand.nextInt(100) > accuracy)
+				missclick(rand);
 			super.print(s.charAt(i));
 		}
 	}
+
+	private void missclick(Random rand){
+		super.print((char) (rand.nextInt(95) + 32)); // Prints a random visible ASCII char 
+		delay(rand);
+		super.print("\b \b");
+		delay(rand);
+	}
+
+	private void delay(Random rand){
+		int delay = minDelay + rand.nextInt(maxDelay - minDelay + 1);
+		try{
+		       	Thread.sleep(delay); 
+		} catch (InterruptedException ex) {/*Handle Exception!*/}
+	}	
 
 	@Override
 	public void print(boolean b){
