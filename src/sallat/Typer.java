@@ -8,15 +8,18 @@ import java.util.Random;
 public class Typer extends PrintStream {
 
 	public static final int DEFAULT_DELAY = 100;
-	public static final int DEFAULT_ACCURACY = 70;
+	public static final int DEFAULT_ACCURACY = 100;
+	public static final int DEFAULT_VARIATION = 0;
 
 	private int minDelay = DEFAULT_DELAY;
 	private int maxDelay = DEFAULT_DELAY;
 	private int accuracy = DEFAULT_ACCURACY;
+	private int variation = DEFAULT_VARIATION;
 
 	public int getMinDelay(){ return minDelay; }
 	public int getMaxDelay(){ return maxDelay; }
 	public int getAccuracy(){ return accuracy; }
+	public int getVariation(){ return variation; }
 
 	public Typer setDelayRange(int minDelay, int maxDelay) throws IllegalArgumentException{
 		if(maxDelay < 0 || minDelay < 0)
@@ -29,13 +32,42 @@ public class Typer extends PrintStream {
 	}
 
 	public Typer setDelay(int delay) throws IllegalArgumentException{
-		return setDelayRange(delay, delay);
+		try{
+			return setDelayRange(delay - variation, delay + variation);
+		} catch(IllegalArgumentException exception){
+			if(variation > delay)
+				throw new IllegalArgumentException("variation can't be greater than delay value", exception);
+			else
+				throw exception;
+		}
+	}
+
+	public Typer setDelay(int delay, int variation) throws IllegalArgumentException{
+		setVariation(variation);
+		return setDelay(delay);
+	}
+
+	public Typer setCPM(double cpm) throws IllegalArgumentException{
+		int delay = (int)((60 / cpm) * 1000);
+		return setDelay(delay);
+	}
+
+	public double getCPM(){
+		double avgDelay = (minDelay + maxDelay) / 2.0;
+		return 60 / (avgDelay / 1000);
 	}
 
 	public Typer setAccuracy(int accuracy) throws IllegalArgumentException{
 		if(accuracy < 0 || accuracy > 100)
 			throw new IllegalArgumentException("accuracy value must be between 0 and 100");
 		this.accuracy = accuracy;
+		return this;
+	}
+	
+	public Typer setVariation(int variation) throws IllegalArgumentException{
+		if(variation < 0)
+			throw new IllegalArgumentException("variation can't be negative");
+		this.variation = variation;
 		return this;
 	}
 

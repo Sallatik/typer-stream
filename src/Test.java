@@ -3,9 +3,12 @@ import sallat.Typer;
 class Test {
 
 	public static void main(String [] args){	
-		System.setOut(new Typer(System.out)
-				.setDelayRange(50,200));
-
+		Typer typer = new Typer(System.out)
+				.setVariation(100)
+				.setCPM(300)
+				.setAccuracy(90);
+		System.setOut(typer);
+		System.out.println(typer.getCPM());
 		System.out.append("Hello World!");
 		System.out.println();
 		System.out.println(false);
