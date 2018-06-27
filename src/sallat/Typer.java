@@ -211,7 +211,12 @@ public class Typer extends PrintStream {
 	@Override
 	public void println(String x){
 		print(x);
-		super.println();
+		println();
+	}
+
+	@Override
+	public void println(){
+		type("\n");
 	}
 
 }
