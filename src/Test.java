@@ -1,9 +1,9 @@
-import sallat.Typer;
+import sallat.TyperStream;
 
 class Test {
 
 	public static void main(String [] args){	
-		Typer typer = new Typer(System.out)
+		TyperStream typer = new TyperStream(System.out)
 				.setVariation(100)
 				.setCPM(300)
 				.setAccuracy(90);

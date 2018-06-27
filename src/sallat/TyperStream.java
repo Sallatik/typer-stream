@@ -5,7 +5,7 @@ import java.nio.charset.Charset;
 import java.util.Locale;
 import java.util.Random;
 
-public class Typer extends PrintStream {
+public class TyperStream extends PrintStream {
 
 	public static final int DEFAULT_DELAY = 100;
 	public static final int DEFAULT_ACCURACY = 100;
@@ -21,7 +21,7 @@ public class Typer extends PrintStream {
 	public int getAccuracy(){ return accuracy; }
 	public int getVariation(){ return variation; }
 
-	public Typer setDelayRange(int minDelay, int maxDelay) throws IllegalArgumentException{
+	public TyperStream setDelayRange(int minDelay, int maxDelay) throws IllegalArgumentException{
 		if(maxDelay < 0 || minDelay < 0)
 			throw new IllegalArgumentException("delay values can't be negative");
 		if(maxDelay < minDelay)
@@ -31,7 +31,7 @@ public class Typer extends PrintStream {
 		return this;
 	}
 
-	public Typer setDelay(int delay) throws IllegalArgumentException{
+	public TyperStream setDelay(int delay) throws IllegalArgumentException{
 		try{
 			return setDelayRange(delay - variation, delay + variation);
 		} catch(IllegalArgumentException exception){
@@ -42,12 +42,12 @@ public class Typer extends PrintStream {
 		}
 	}
 
-	public Typer setDelay(int delay, int variation) throws IllegalArgumentException{
+	public TyperStream setDelay(int delay, int variation) throws IllegalArgumentException{
 		setVariation(variation);
 		return setDelay(delay);
 	}
 
-	public Typer setCPM(double cpm) throws IllegalArgumentException{
+	public TyperStream setCPM(double cpm) throws IllegalArgumentException{
 		int delay = (int)((60 / cpm) * 1000);
 		return setDelay(delay);
 	}
@@ -57,33 +57,33 @@ public class Typer extends PrintStream {
 		return 60 / (avgDelay / 1000);
 	}
 
-	public Typer setAccuracy(int accuracy) throws IllegalArgumentException{
+	public TyperStream setAccuracy(int accuracy) throws IllegalArgumentException{
 		if(accuracy < 0 || accuracy > 100)
 			throw new IllegalArgumentException("accuracy value must be between 0 and 100");
 		this.accuracy = accuracy;
 		return this;
 	}
-	
-	public Typer setVariation(int variation) throws IllegalArgumentException{
+
+	public TyperStream setVariation(int variation) throws IllegalArgumentException{
 		if(variation < 0)
 			throw new IllegalArgumentException("variation can't be negative");
 		this.variation = variation;
 		return this;
 	}
 
-	public Typer(OutputStream out){
+	public TyperStream(OutputStream out){
 		super(out);
 	}
 
-	public Typer(OutputStream out, boolean autoFlush){
+	public TyperStream(OutputStream out, boolean autoFlush){
 		super(out, autoFlush);
 	}
 
-	public Typer(OutputStream out, boolean autoFlush, String encoding) throws UnsupportedEncodingException{
+	public TyperStream(OutputStream out, boolean autoFlush, String encoding) throws UnsupportedEncodingException{
 		super(out, autoFlush, encoding);
 	}
 
-	public Typer(OutputStream out, boolean autoFlush, Charset charset){
+	public TyperStream(OutputStream out, boolean autoFlush, Charset charset){
 		super(out, autoFlush, charset);
 	}
 		
