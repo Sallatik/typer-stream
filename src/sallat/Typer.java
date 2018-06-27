@@ -92,12 +92,12 @@ public class Typer extends PrintStream {
 		for(int i = 0; i < s.length(); i++){
 			delay(rand);
 			if(rand.nextInt(100) > accuracy)
-				missclick(rand);
+				misstype(rand);
 			super.print(s.charAt(i));
 		}
 	}
 
-	private void missclick(Random rand){
+	private void misstype(Random rand){
 		super.print((char) (rand.nextInt(95) + 32)); // Prints a random visible ASCII char 
 		delay(rand);
 		super.print("\b \b");
