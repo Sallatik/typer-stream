@@ -28,6 +28,7 @@ public class TyperStream extends PrintStream {
 			throw new IllegalArgumentException("max delay must be greater than min delay");
 		this.minDelay = minDelay;
 		this.maxDelay = maxDelay;
+		setVariation((maxDelay - minDelay) / 2);
 		return this;
 	}
 

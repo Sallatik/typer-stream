@@ -9,6 +9,7 @@ class Test {
 				.setAccuracy(90);
 		System.setOut(typer);
 		System.out.println(typer.getCPM());
+		System.out.println(typer.getVariation());
 		System.out.append("Hello World!");
 		System.out.println();
 		System.out.println(false);
