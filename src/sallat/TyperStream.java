@@ -16,11 +16,6 @@ public class TyperStream extends PrintStream {
 	private int accuracy = DEFAULT_ACCURACY;
 	private int variation = DEFAULT_VARIATION;
 
-	public int getMinDelay(){ return minDelay; }
-	public int getMaxDelay(){ return maxDelay; }
-	public int getAccuracy(){ return accuracy; }
-	public int getVariation(){ return variation; }
-
 	public TyperStream setDelayRange(int minDelay, int maxDelay) throws IllegalArgumentException{
 		if(maxDelay < 0 || minDelay < 0)
 			throw new IllegalArgumentException("delay values can't be negative");
@@ -53,11 +48,6 @@ public class TyperStream extends PrintStream {
 		return setDelay(delay);
 	}
 
-	public double getCPM(){
-		double avgDelay = (minDelay + maxDelay) / 2.0;
-		return 60 / (avgDelay / 1000);
-	}
-
 	public TyperStream setAccuracy(int accuracy) throws IllegalArgumentException{
 		if(accuracy < 0 || accuracy > 100)
 			throw new IllegalArgumentException("accuracy value must be between 0 and 100");
@@ -70,22 +60,6 @@ public class TyperStream extends PrintStream {
 			throw new IllegalArgumentException("variation can't be negative");
 		this.variation = variation;
 		return this;
-	}
-
-	public TyperStream(OutputStream out){
-		super(out);
-	}
-
-	public TyperStream(OutputStream out, boolean autoFlush){
-		super(out, autoFlush);
-	}
-
-	public TyperStream(OutputStream out, boolean autoFlush, String encoding) throws UnsupportedEncodingException{
-		super(out, autoFlush, encoding);
-	}
-
-	public TyperStream(OutputStream out, boolean autoFlush, Charset charset){
-		super(out, autoFlush, charset);
 	}
 		
 	private void type(String s){
@@ -220,4 +194,29 @@ public class TyperStream extends PrintStream {
 		type("\n");
 	}
 
+	public TyperStream(OutputStream out){
+		super(out);
+	}
+
+	public TyperStream(OutputStream out, boolean autoFlush){
+		super(out, autoFlush);
+	}
+
+	public TyperStream(OutputStream out, boolean autoFlush, String encoding) throws UnsupportedEncodingException{
+		super(out, autoFlush, encoding);
+	}
+
+	public TyperStream(OutputStream out, boolean autoFlush, Charset charset){
+		super(out, autoFlush, charset);
+	}
+
+	public double getCPM(){
+		double avgDelay = (minDelay + maxDelay) / 2.0;
+		return 60 / (avgDelay / 1000);
+	}
+
+	public int getMinDelay(){ return minDelay; }
+	public int getMaxDelay(){ return maxDelay; }
+	public int getAccuracy(){ return accuracy; }
+	public int getVariation(){ return variation; }
 }
