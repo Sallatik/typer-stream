@@ -62,7 +62,7 @@ public class TyperStream extends PrintStream {
 		return this;
 	}
 		
-	private void type(String s){
+	private synchronized void type(String s){
 		Random rand = new Random();
 		for(int i = 0; i < s.length(); i++){
 			delay(rand);
@@ -190,7 +190,7 @@ public class TyperStream extends PrintStream {
 	}
 
 	@Override
-	public void println(){
+	public synchronized void println(){
 		type("\n");
 	}
 
