@@ -64,10 +64,10 @@ public class TyperStream extends PrintStream {
 		
 	private void type(String s){
 		Random rand = new Random();
-		for(int i = 0; i < s.length(); i++){
+		for(char ch : s.toCharArray()){
 			if(rand.nextInt(100) > accuracy)
 				misstype(rand);
-			write(s.charAt(i), rand);
+			write(ch, rand);
 		}
 	}
 
