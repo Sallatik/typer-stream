@@ -65,18 +65,21 @@ public class TyperStream extends PrintStream {
 	private void type(String s){
 		Random rand = new Random();
 		for(int i = 0; i < s.length(); i++){
-			delay(rand);
 			if(rand.nextInt(100) > accuracy)
 				misstype(rand);
-			super.print(s.charAt(i));
+			write(s.charAt(i), rand);
 		}
 	}
 
+	private void write(Object s, Random rand){
+		delay(rand);
+		super.print(s);
+		flush();
+	}
+
 	private void misstype(Random rand){
-		super.print((char) (rand.nextInt(95) + 32)); // Prints a random visible ASCII char 
-		delay(rand);
-		super.print("\b \b");
-		delay(rand);
+		write((char) (rand.nextInt(95) + 32), rand); // Prints a random visible ASCII char 
+		write("\b \b", rand);
 	}
 
 	private void delay(Random rand){
@@ -197,17 +200,13 @@ public class TyperStream extends PrintStream {
 	public TyperStream(OutputStream out){
 		super(out);
 	}
-
-	public TyperStream(OutputStream out, boolean autoFlush){
-		super(out, autoFlush);
+	
+	public TyperStream(OutputStream out, String encoding) throws UnsupportedEncodingException{
+		super(out, false, encoding);
 	}
 
-	public TyperStream(OutputStream out, boolean autoFlush, String encoding) throws UnsupportedEncodingException{
-		super(out, autoFlush, encoding);
-	}
-
-	public TyperStream(OutputStream out, boolean autoFlush, Charset charset){
-		super(out, autoFlush, charset);
+	public TyperStream(OutputStream out, Charset charset){
+		super(out, false, charset);
 	}
 
 	public double getCPM(){
