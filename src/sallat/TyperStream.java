@@ -14,7 +14,6 @@ public class TyperStream extends PrintStream {
 	private int minDelay = DEFAULT_DELAY;
 	private int maxDelay = DEFAULT_DELAY;
 	private int accuracy = DEFAULT_ACCURACY;
-	private int variation = DEFAULT_VARIATION;
 
 	public TyperStream setDelayRange(int minDelay, int maxDelay) throws IllegalArgumentException{
 		if(maxDelay < 0 || minDelay < 0)
@@ -23,42 +22,28 @@ public class TyperStream extends PrintStream {
 			throw new IllegalArgumentException("max delay must be greater than min delay");
 		this.minDelay = minDelay;
 		this.maxDelay = maxDelay;
-		setVariation((maxDelay - minDelay) / 2);
 		return this;
 	}
 
-	public TyperStream setDelay(int delay) throws IllegalArgumentException{
-		try{
-			return setDelayRange(delay - variation, delay + variation);
-		} catch(IllegalArgumentException exception){
-			if(variation > delay)
-				throw new IllegalArgumentException("variation can't be greater than delay value", exception);
-			else
-				throw exception;
-		}
+	private void requirePercentValue(int num) throws IllegalArgumentException{
+		if(num < 0 || num > 100)
+			throw new IllegalArgumentException(num + " is not a percent value");
 	}
 
 	public TyperStream setDelay(int delay, int variation) throws IllegalArgumentException{
-		setVariation(variation);
-		return setDelay(delay);
+		requirePercentValue(variation);
+		int diff = (int) (delay * ((double) variation / 100));
+		return setDelayRange(delay - diff, delay + diff);
 	}
 
-	public TyperStream setCPM(double cpm) throws IllegalArgumentException{
+	public TyperStream setCPM(double cpm, int variation) throws IllegalArgumentException{
 		int delay = (int)((60 / cpm) * 1000);
-		return setDelay(delay);
+		return setDelay(delay, variation);
 	}
 
 	public TyperStream setAccuracy(int accuracy) throws IllegalArgumentException{
-		if(accuracy < 0 || accuracy > 100)
-			throw new IllegalArgumentException("accuracy value must be between 0 and 100");
+		requirePercentValue(accuracy);
 		this.accuracy = accuracy;
-		return this;
-	}
-
-	public TyperStream setVariation(int variation) throws IllegalArgumentException{
-		if(variation < 0)
-			throw new IllegalArgumentException("variation can't be negative");
-		this.variation = variation;
 		return this;
 	}
 		
@@ -217,5 +202,4 @@ public class TyperStream extends PrintStream {
 	public int getMinDelay(){ return minDelay; }
 	public int getMaxDelay(){ return maxDelay; }
 	public int getAccuracy(){ return accuracy; }
-	public int getVariation(){ return variation; }
 }
