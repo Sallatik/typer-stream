@@ -52,32 +52,34 @@ public class TyperStream extends PrintStream {
 		
 	private void type(String s){
 		Random rand = new Random();
-		for(char ch : s.toCharArray()){
-			if(rand.nextInt(100) > accuracy)
-				misstype(rand);
-			write(ch, rand);
+		try{
+			for(char ch : s.toCharArray()){
+				if(rand.nextInt(100) > accuracy)
+					misstype(rand);
+				write(ch, rand);
+			}
+		} catch(InterruptedException e){ //when interrupted, stop typing
+			return;
 		}
 	}
 
-	private void write(Object s, Random rand){
+	private void write(Object s, Random rand) throws InterruptedException{
 		delay(rand);
 		super.print(s);
 		flush();
 	}
 
-	private void misstype(Random rand){
+	private void misstype(Random rand) throws InterruptedException{
 		write((char) (rand.nextInt(95) + 32), rand); // Prints a random visible ASCII char 
 		write("\b \b", rand);
 	}
 
-	private void delay(Random rand){
+	private void delay(Random rand) throws InterruptedException{
 		int delay;
 		synchronized(lock){
 			delay = minDelay + rand.nextInt(maxDelay - minDelay + 1);
 		}
-		try{
-		       	Thread.sleep(delay); 
-		} catch (InterruptedException ex) {/*Handle Exception!*/}
+		Thread.sleep(delay);
 	}	
 
 	@Override
