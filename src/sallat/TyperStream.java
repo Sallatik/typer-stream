@@ -14,14 +14,17 @@ public class TyperStream extends PrintStream {
 	private int minDelay = DEFAULT_DELAY;
 	private int maxDelay = DEFAULT_DELAY;
 	private int accuracy = DEFAULT_ACCURACY;
+	private Object lock = new Object();
 
 	public TyperStream setDelayRange(int minDelay, int maxDelay) throws IllegalArgumentException{
 		if(maxDelay < 0 || minDelay < 0)
 			throw new IllegalArgumentException("delay values can't be negative");
 		if(maxDelay < minDelay)
 			throw new IllegalArgumentException("max delay must be greater than min delay");
-		this.minDelay = minDelay;
-		this.maxDelay = maxDelay;
+		synchronized(lock){
+			this.minDelay = minDelay;
+			this.maxDelay = maxDelay;
+		}
 		return this;
 	}
 
@@ -68,7 +71,10 @@ public class TyperStream extends PrintStream {
 	}
 
 	private void delay(Random rand){
-		int delay = minDelay + rand.nextInt(maxDelay - minDelay + 1);
+		int delay;
+		synchronized(lock){
+			delay = minDelay + rand.nextInt(maxDelay - minDelay + 1);
+		}
 		try{
 		       	Thread.sleep(delay); 
 		} catch (InterruptedException ex) {/*Handle Exception!*/}
