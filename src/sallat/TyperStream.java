@@ -56,22 +56,28 @@ public class TyperStream extends PrintStream {
 			for(char ch : s.toCharArray()){
 				if(rand.nextInt(100) > accuracy)
 					misstype(rand);
-				write(ch, rand);
+				printFlush(ch, rand);
 			}
 		} catch(InterruptedException e){ //when interrupted, stop typing
 			return;
 		}
 	}
 
-	private void write(Object s, Random rand) throws InterruptedException{
+	private void printFlush(char ch, Random rand) throws InterruptedException{
 		delay(rand);
-		super.print(s);
+		super.print(ch);
+		flush();
+	}
+	
+	private void erase(Random rand) throws InterruptedException{
+		delay(rand);
+		super.print("\b \b");
 		flush();
 	}
 
 	private void misstype(Random rand) throws InterruptedException{
-		write((char) (rand.nextInt(95) + 32), rand); // Prints a random visible ASCII char 
-		write("\b \b", rand);
+		printFlush((char) (rand.nextInt(95) + 32), rand); // Prints a random visible ASCII char 
+		erase(rand);
 	}
 
 	private void delay(Random rand) throws InterruptedException{
