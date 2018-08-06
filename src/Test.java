@@ -4,7 +4,8 @@ class Test{
 	public static void main(String... args){
 		TyperStream typer = new TyperStream(System.out);
 		typer.setDelay(200, 50)
-			.setAccuracy(50);
+			.setAccuracy(50)
+			.setMisstypeSupplier((r,c) -> 'A');
 		typer.println(typer.getMinDelay() + " " + typer.getMaxDelay());
 		typer.println(typer.getCPM());
 		typer.println("sgfadg dfg dsfgdfsg fdggeragsfdgfdsgfdhsadf");

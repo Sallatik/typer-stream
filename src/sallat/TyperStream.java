@@ -1,9 +1,9 @@
 package sallat;
 
+
 import java.io.*;
 import java.nio.charset.Charset;
-import java.util.Locale;
-import java.util.Random;
+import java.util.*;
 
 public class TyperStream extends PrintStream {
 
@@ -15,6 +15,8 @@ public class TyperStream extends PrintStream {
 	private int maxDelay = DEFAULT_DELAY;
 	private int accuracy = DEFAULT_ACCURACY;
 	private Object lock = new Object();
+
+	private MisstypeSupplier supplier = new LatinMisstypeSupplier();
 
 	public TyperStream setDelayRange(int minDelay, int maxDelay) throws IllegalArgumentException{
 		if(maxDelay < 0 || minDelay < 0)
@@ -49,13 +51,20 @@ public class TyperStream extends PrintStream {
 		this.accuracy = accuracy;
 		return this;
 	}
+
+	public TyperStream setMisstypeSupplier(MisstypeSupplier supplier){
+		this.supplier = Objects.requireNonNull(supplier);
+		return this;
+	}
 		
 	private void type(String s){
 		Random rand = new Random();
 		try{
 			for(char ch : s.toCharArray()){
-				if(rand.nextInt(100) > accuracy)
-					misstype(rand);
+				if(rand.nextInt(100) > accuracy){
+					printFlush(supplier.supply(rand, ch), rand);
+					erase(rand);
+				}
 				printFlush(ch, rand);
 			}
 		} catch(InterruptedException e){ //when interrupted, stop typing
@@ -73,11 +82,6 @@ public class TyperStream extends PrintStream {
 		delay(rand);
 		super.print("\b \b");
 		flush();
-	}
-
-	private void misstype(Random rand) throws InterruptedException{
-		printFlush((char) (rand.nextInt(95) + 32), rand); // Prints a random visible ASCII char 
-		erase(rand);
 	}
 
 	private void delay(Random rand) throws InterruptedException{
@@ -195,7 +199,7 @@ public class TyperStream extends PrintStream {
 	public synchronized void println(){
 		type("\n");
 	}
-
+	
 	public TyperStream(OutputStream out){
 		super(out);
 	}
@@ -212,7 +216,7 @@ public class TyperStream extends PrintStream {
 		double avgDelay = (minDelay + maxDelay) / 2.0;
 		return 60 / (avgDelay / 1000);
 	}
-
+	
 	public int getMinDelay(){ return minDelay; }
 	public int getMaxDelay(){ return maxDelay; }
 	public int getAccuracy(){ return accuracy; }
