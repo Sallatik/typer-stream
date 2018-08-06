@@ -1,8 +1,8 @@
-import sallat.TyperStream;
+import sallat.*;
 
 class Test{
 	public static void main(String... args){
-		TyperStream typer = new TyperStream(System.out);
+		TypeStream typer = new TypeStream(System.out);
 		typer.setDelay(200, 50)
 			.setAccuracy(50)
 			.setMisstypeSupplier((r,c) -> 'A');
